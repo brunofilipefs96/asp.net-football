@@ -34,19 +34,19 @@ Welcome to the Football News Blog project! This application is built using ASP.N
 
 ## Instalation
 
-# Clone the repository
+- **Clone the repository**
 git clone https://github.com/yourusername/football-news-blog.git
 
-# Navigate to the project directory
+- **Navigate to the project directory**
 cd football-news-blog
 
-# Restore the dependencies
+- **Restore the dependencies**
 dotnet restore
 
-# Update the database connection string in `appsettings.json`
+- **Update the database connection string in `appsettings.json`**
 
-# Apply migrations to create the database
+- **Apply migrations to create the database**
 dotnet ef database update
 
-# Run the application
+- **Run the application**
 dotnet run
