@@ -1,0 +1,105 @@
+﻿@model IEnumerable<Turma_5413_TP_BrunoSilva.Models.Article>
+
+@section Styles {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+}
+
+<div class="container mt-5" data-aos="fade-in">
+    <div class="row">
+
+        <div class="col-md-9">
+            <h2 class="text-light">Articles</h2>
+
+            <div class="input-group mb-4">
+                <div class="input-group-prepend">
+                    <span class="input-group-text bg-dark text-light" id="search-icon"><i class="fas fa-search"></i></span>
+                </div>
+                <input type="text" id="searchBox" name="searchString" class="form-control bg-dark text-light" placeholder="Search by title or author" value="@ViewBag.CurrentFilter" />
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-4 mt-4">
+                    @if (User.IsInRole("Administrador"))
+                    {
+                        <a class="btn btn-custom" asp-action="Create">Create New Article</a>
+                    }
+                </div>
+            </div>
+
+            <div class="row">
+                @foreach (var item in Model.Where(article => article.IsPublic || User.IsInRole("Cliente") || User.IsInRole("Administrador")))
+                {
+                    <div class="col-md-4 mb-4">
+                        <div class="card bg-dark text-light">
+                            @if (!string.IsNullOrEmpty(item.ImageUrl))
+                            {
+                                <img src="@item.ImageUrl" class="card-img-top" alt="@item.Title" style="max-width: 100%; height: auto;">
+                            }
+                            <div class="card-body">
+                                <h5 class="card-title">@item.Title</h5>
+                                <p class="card-text">@item.PublishedDate.ToShortDateString()</p>
+
+                                <p class="card-text">
+                                    <div class="star-rating" title="@item.Rating.ToString("0.0") stars">
+                                        <div class="filled-stars" style="width: @((item.Rating / 5.0) * 100)%"></div>
+                                    </div>
+                                    (@item.Ratings.Count() votes)
+                                </p>
+                                <a href="@Url.Action("Details", new { id = item.Id })" class="btn btn-custom">View</a>
+                                @if (User.IsInRole("Administrador"))
+                                {
+                                    <a href="@Url.Action("Edit", new { id = item.Id })" class="btn btn-custom">Edit</a>
+                                    <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-custom">Delete</a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card bg-dark text-light mb-4">
+                <div class="card-header">
+                    <h5>Navigation Menu</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <li class="list-group-item bg-dark text-light">
+                            <a href="@Url.Action("Index", new { searchString = "" })" class="text-light navigation-link @((string.IsNullOrEmpty(ViewBag.CurrentFilter)) ? "selected" : "")">
+                                All Articles
+                            </a>
+                        </li>
+                        @foreach (var year in ViewBag.ArticleDates.Keys)
+                        {
+                            <li class="list-group-item bg-dark text-light">
+                                <a href="@Url.Action("Index", new { searchString = year.ToString() })" class="text-light navigation-link @((ViewBag.CurrentFilter == year.ToString()) ? "selected" : "")">
+                                    @year
+                                </a>
+                                <ul class="list-group mt-2">
+                                    @foreach (var month in ViewBag.ArticleDates[year].Keys)
+                                    {
+                                        <li class="list-group-item bg-dark text-light">
+                                            <a href="@Url.Action("Index", new { searchString = $"{year}-{month:00}" })" class="text-light navigation-link @((ViewBag.CurrentFilter == $"{year}-{month:00}") ? "selected" : "")">
+                                                @System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month) (@ViewBag.ArticleDates[year][month])
+                                            </a>
+                                        </li>
+                                    }
+                                </ul>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+    <script src="~/js/search.js"></script>
+}

@@ -1,0 +1,16 @@
+﻿@model Turma_5413_TP_BrunoSilva.Models.DeleteUserViewModel
+
+<h2>Delete User</h2>
+
+<h3>Are you sure you want to delete this user?</h3>
+<div>
+    <h4>@Model.Email</h4>
+</div>
+
+<form asp-action="DeleteConfirmed">
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </div>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

@@ -1,0 +1,114 @@
+﻿@section Styles {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+}
+
+<div class="container mt-5" data-aos="fade-in">
+    <div class="card bg-dark text-light">
+        <div class="card-header text-center">
+            <h2>@Model.Title</h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                {
+                    <div class="col-md-4">
+                        <img src="@Model.ImageUrl" class="img-fluid mb-3" alt="@Model.Title" style="max-width: 100%; height: auto;">
+                    </div>
+                }
+                <div class="col-md-8">
+                    <p>@Model.Content</p>
+                    <p class="card-text">@Model.PublishedDate.ToShortDateString()</p>
+                    <div class="star-rating" title="@Model.Rating.ToString("0.0") stars">
+                        <div class="filled-stars" style="width: @((Model.Rating / 5.0) * 100)%"></div>
+                    </div>
+                    <p class="card-text">@Model.Rating.ToString("0.0") stars (@ViewBag.VotesCount votes)</p>
+
+                    @if (User.IsInRole("Cliente"))
+                    {
+                        @if (!ViewBag.HasVoted)
+                        {
+                            <form asp-action="RateArticle" method="post">
+                                <input type="hidden" name="ArticleId" value="@Model.Id" />
+                                <label for="rating">Rate this article:</label>
+                                <select name="rating" id="rating" class="form-control">
+                                    <option value="1">1 star</option>
+                                    <option value="2">2 stars</option>
+                                    <option value="3">3 stars</option>
+                                    <option value="4">4 stars</option>
+                                    <option value="5">5 stars</option>
+                                </select>
+                                <button type="submit" class="btn btn-custom mt-2">Submit</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <p>You have already rated this article.</p>
+                        }
+                    }
+                </div>
+            </div>
+
+            <hr />
+
+            <h4>Comments</h4>
+
+            @if (User.IsInRole("Administrador"))
+            {
+                <form asp-action="DeleteAllComments" method="post">
+                    <input type="hidden" name="articleId" value="@Model.Id" />
+                    <button type="submit" class="btn btn-danger mb-3">Delete All Comments</button>
+                </form>
+            }
+
+            <div id="comments-section">
+                @foreach (var comment in ViewBag.Comments)
+                {
+                    <div class="comment-box">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <div class="comment-author">@comment.UserName</div>
+                                <div class="comment-date">@comment.CreatedAt.ToString("dd/MM/yyyy HH:mm")</div>
+                            </div>
+                            @if (User.Identity?.Name == comment.UserName || User.IsInRole("Administrador"))
+                            {
+                                <form asp-action="DeleteComment" method="post" style="display: inline;">
+                                    <input type="hidden" name="commentId" value="@comment.Id" />
+                                    <button type="submit" class="delete-icon">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            }
+                        </div>
+                        <div class="comment-content">@comment.Content</div>
+                    </div>
+                }
+            </div>
+
+            @if (User.IsInRole("Cliente"))
+            {
+                <form asp-action="AddComment" method="post">
+                    <input type="hidden" name="articleId" value="@Model.Id" />
+                    <div class="form-group">
+                        <label for="content">Add a comment:</label>
+                        <textarea name="content" id="content" class="form-control bg-dark text-light" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-custom mt-2">Submit</button>
+                </form>
+            }
+            else
+            {
+                <p>You must be logged in as a client to post comments.</p>
+            }
+        </div>
+        <div class="card-footer text-center">
+            <a class="btn btn-custom" asp-action="Index">Back to List</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+}

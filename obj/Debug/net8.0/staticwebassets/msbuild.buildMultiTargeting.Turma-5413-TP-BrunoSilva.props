@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\Turma-5413-TP-BrunoSilva.props" />
+</Project>

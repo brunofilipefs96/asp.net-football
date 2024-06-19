@@ -1,0 +1,55 @@
+﻿@model Turma_5413_TP_BrunoSilva.Models.Article
+
+<div class="container mt-5">
+    <div class="card bg-dark text-light">
+        <div class="card-header text-center">
+            <h2>Edit Article</h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                {
+                    <div class="col-md-4">
+                        <img src="@Model.ImageUrl" class="img-fluid mb-3" alt="@Model.Title" style="max-width: 100%; height: auto;">
+                    </div>
+                }
+                <div class="col-md-8">
+                    <form asp-action="Edit">
+                        <div class="form-group mb-3">
+                            <label asp-for="Title" class="control-label"></label>
+                            <input asp-for="Title" class="form-control bg-dark text-light" />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label asp-for="Content" class="control-label"></label>
+                            <textarea asp-for="Content" class="form-control bg-dark text-light"></textarea>
+                            <span asp-validation-for="Content" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label asp-for="PublishedDate" class="control-label"></label>
+                            <input asp-for="PublishedDate" class="form-control bg-dark text-light" />
+                            <span asp-validation-for="PublishedDate" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label asp-for="ImageUrl" class="control-label"></label>
+                            <input asp-for="ImageUrl" class="form-control bg-dark text-light" />
+                            <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                        </div>
+                        <div class="form-group form-check mb-3">
+                            <input asp-for="IsPublic" class="form-check-input" />
+                            <label asp-for="IsPublic" class="form-check-label">Is Public</label>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-custom">Save</button>
+                            <a class="btn btn-secondary" asp-action="Index">Back to List</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,53 @@
+﻿@{
+    ViewData["Title"] = "Welcome";
+}
+
+<video autoplay muted loop id="background-video" class="bg-video">
+    <source src="~/videos/football.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
+
+<div class="content-overlay">
+    <div class="container">
+        <div class="text-center mb-5 animate__animated animate__fadeIn">
+            <h1 class="display-4 text-light">Welcome to the Football Blog</h1>
+            <p class="lead text-light">Stay updated with the latest football news and transfer rumors. Dive into the world of football and enjoy!</p>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card bg-dark text-light">
+                    <div class="card-body">
+                        <h5 class="card-title">About the Blog</h5>
+                        <p class="card-text">
+                            Welcome to the Football Blog, your go-to source for the latest updates in the football world. From match analysis to transfer rumors, our blog provides you with comprehensive coverage and insights into the beautiful game.
+                        </p>
+                        <p class="card-text">
+                            Stay informed about the latest trends, tips, and stories that matter in football. Whether you are here to catch up on the latest news or dive deep into transfer gossip, we've got you covered.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="card bg-dark text-light">
+                    <div class="card-body">
+                        <h5 class="card-title">Join Our Community</h5>
+                        <p class="card-text">
+                            Join our community of football enthusiasts and be part of the discussion. Share your opinions, ask questions, and connect with fellow fans. Your input is valuable, and we look forward to your active participation.
+                        </p>
+                        <p class="card-text">
+                            Don't forget to subscribe to our newsletter for regular updates. Follow us on social media to stay connected and never miss out on new content.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-5 animate__animated animate__fadeInUp">
+            <a class="btn btn-custom" asp-area="" asp-controller="Articles" asp-action="Index">Explore Articles</a>
+        </div>
+    </div>
+</div>
+<footer class="footer">
+    <div class="container text-center">
+        <p class="text-light">© 2024 Football Blog. All Rights Reserved.</p>
+    </div>
+</footer>
